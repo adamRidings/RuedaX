@@ -1,0 +1,139 @@
+/* Deja espacio por el header flotante */
+.vender-main {
+    padding: 130px 2rem 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Cabecera de la página */
+.vender-header {
+    margin-bottom: 1.5rem;
+}
+
+.vender-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.vender-subtitle {
+    font-size: 0.95rem;
+    color: #777777;
+}
+
+/* Formulario general */
+.form-vender {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+/* Cada bloque (vehículo / anuncio) */
+.form-section {
+    background-color: #1A2E40;
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.75rem;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.form-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #FFFFFF;
+}
+
+/* Grid de campos dentro de cada bloque */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem 1.5rem;
+}
+
+/* Campo individual */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-field-full {
+    grid-column: 1 / -1;
+    /* ocupa todo el ancho en grid */
+}
+
+/* Etiquetas e inputs */
+.form-field label {
+    font-size: 0.9rem;
+    color: #ffffff;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #0a121a;
+    background-color: #0a121a;
+    color: #ffffff;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Focus */
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: #C3401C;
+    box-shadow: 0 0 0 2px #6b1700;
+    background-color: #020509;
+}
+
+/* Botones */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-primary {
+    padding: 0.6rem 1.6rem;
+    margin-right: .5rem;
+    border-radius: 999px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: #C3401C;
+    color: #ffffff;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.55);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.6);
+    filter: brightness(1.05);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55);
+}
+
+/* Responsive ajustes */
+@media (max-width: 768px) {
+    .vender-main {
+        padding: 110px 1.25rem 2rem;
+    }
+
+    .form-section {
+        padding: 1.25rem 1.1rem 1.4rem;
+    }
+}

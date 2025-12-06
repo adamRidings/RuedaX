@@ -27,11 +27,10 @@ const VentanaLogin = (props) => {
   const [colorAlerta, setcolorAlerta] = useState();
 
   const login = (usuario, clave) => {
-    var md5 = require("md5");
     axios
       .post(PHPLOGIN, {
         usuario: usuario,
-        clave: md5(clave),
+        clave: clave,
       },
         {
           headers: { "Content-Type": "application/json" }

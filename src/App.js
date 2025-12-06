@@ -6,6 +6,9 @@ import Header from "./components/header/header.js";
 import Footer from "./components/footer/footer.js";
 import VentanaLogin from "./components/login/VentanaLogin.js";
 import VentanaRegistro from "./components/registro/VentanaRegistro.js";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Vender from "./components/vender/vender.js";
+
 
 class App extends Component {
   constructor(props) {
@@ -13,6 +16,8 @@ class App extends Component {
     this.state = {
       logueado: false,
       usuarioLogueado: "",
+      mostrarLogin: false,
+      mostrarRegistro: false,
     };
   }
 
@@ -42,23 +47,58 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Header
-          toggleLogin={() => this.toggleLogin()}
+      <Router>
+        <Routes>
+          {/* Pagina de inicio */}
+          <Route path="/" element={
+            <>
+              <Header
+                toggleLogin={() => this.toggleLogin()}
+              />
+
+              <VentanaLogin
+                mostrar={this.state.mostrarLogin}
+                toggle={() => this.toggleLogin()}
+                login={(usuario) => this.login(usuario)}
+                toggleRegistro={() => this.toggleRegistro()}
+              />
+
+              <VentanaRegistro
+                mostrar={this.state.mostrarRegistro}
+                toggle={() => this.toggleRegistro()}
+                registro={(usuario) => this.registro(usuario)}
+              />
+            </>
+          }
         />
 
-        <VentanaLogin
-          mostrar={this.state.mostrarLogin}
-          toggle={() => this.toggleLogin()}
-          login={(usuario) => this.login(usuario)}
-          toggleRegistro={() => this.toggleRegistro()}
+        {/* Página venta */}
+        <Route
+          path="/vender" element={
+            <>
+              <Header
+                toggleLogin={() => this.toggleLogin()}
+              />
+
+              <VentanaLogin
+                mostrar={this.state.mostrarLogin}
+                toggle={() => this.toggleLogin()}
+                login={(usuario) => this.login(usuario)}
+                toggleRegistro={() => this.toggleRegistro()}
+              />
+
+              <VentanaRegistro
+                mostrar={this.state.mostrarRegistro}
+                toggle={() => this.toggleRegistro()}
+                registro={(usuario) => this.registro(usuario)}
+              />
+              
+              <Vender usuarioLogueado={this.state.usuarioLogueado} />
+            </>
+          }
         />
-        <VentanaRegistro
-          mostrar={this.state.mostrarRegistro}
-          toggle={() => this.toggleRegistro()}
-          registro={(usuario) => this.registro(usuario)}
-        />
-      </div>
+        </Routes>
+      </Router>
     );
   }
 }

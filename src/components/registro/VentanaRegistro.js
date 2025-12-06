@@ -30,29 +30,27 @@ const VentanaRegistro = (props) => {
   const [colorAlerta, setcolorAlerta] = useState();
 
   const registro = (nombre, apellido, email, usuario, clave) => {
-    var md5 = require("md5");
     axios
       .post(PHPREGISTRO, {
         nombre: nombre,
         apellido: apellido,
         email: email,
         usuario: usuario,
-        clave: md5(clave),
+        clave: clave,
       },
         {
           headers: { "Content-Type": "application/json" }
         })
       .then((res) => {
-        console.log(res.data);
         if (res.data.mensaje === "Acceso correcto") {
           setVerAlerta(true);
           setcolorAlerta("success");
-          setmsgAlerta("Login exitoso");
-          props.login(usuario);
+          setmsgAlerta("Registro exitoso");
+          props.registro(usuario);
         } else {
           setVerAlerta(true);
           setcolorAlerta("warning");
-          setmsgAlerta("Usurio y/o clave erroneos");
+          setmsgAlerta(res.data.mensaje);
         }
       });
   };

@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { GoArrowRight, GoArrowUpRight } from 'react-icons/go';
 import './CardNav.css';
 import logoImg from '../../assets/icons/logo.png'
+import { useNavigate } from 'react-router-dom';
 
 const CardNav = ({
   items,
@@ -16,6 +17,7 @@ const CardNav = ({
   const navRef = useRef(null);
   const cardsRef = useRef([]);
   const tlRef = useRef(null);
+  const navigate = useNavigate();
 
   const calculateHeight = () => {
     const navEl = navRef.current;
@@ -130,6 +132,14 @@ const CardNav = ({
     if (el) cardsRef.current[i] = el;
   };
 
+  const handlerVenderView = (tipo) => {
+    // Navegar a la vista de vender con el tipo seleccionado
+    navigate('/vender', { state: { tipo } });
+
+    // Cerrar el menú después de la navegación
+    toggleMenu();
+  }
+
   return (
     <div className={`card-nav-container ${className}`}>
       <nav ref={navRef} className={`card-nav ${isExpanded ? 'open' : ''}`}>
@@ -165,7 +175,12 @@ const CardNav = ({
               <input type="text" placeholder="Modelo" className="nav-card-input" />
               <div className='nav-card-container-bottom'>
                 <div className='nav-card-anio'>
-                  <input type="date" placeholder="Año" className="nav-card-input" />
+                  <select className='nav-card-input'>
+                    {Array.from({ length: 101 }, (_, i) => {
+                      const year = 2025 - i;
+                      return <option key={year} value={year}>{year}</option>;
+                    })}
+                  </select>
                 </div>
                 <div className='nav-card-btn'>
                   <button className="nav-card-input">Buscar <GoArrowRight /></button>
@@ -177,8 +192,8 @@ const CardNav = ({
           <div className="nav-card" ref={setCardRef('2')}>
             <div className="nav-card-label">{'Vender'}</div>
             <div className="nav-card-functionality-2">
-              <button className="nav-card-button">Como particular <GoArrowRight /></button>
-              <button className="nav-card-button">Como concesionario <GoArrowRight /></button>
+              <button className="nav-card-button" onClick={() => handlerVenderView('particular')}>Como particular <GoArrowRight /></button>
+              <button className="nav-card-button" onClick={() => handlerVenderView('concesionario')}>Como concesionario <GoArrowRight /></button>
             </div>
           </div>
 

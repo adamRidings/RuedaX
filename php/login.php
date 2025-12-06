@@ -25,14 +25,18 @@ try {
         ]
     );
 
-    $consulta = "SELECT * FROM `usuarios` WHERE `user_name` = ? AND `clave` = ?";
+    $consulta = "SELECT `user_name`, `clave` FROM `usuarios` WHERE `user_name` = ?";
     $sentencia = $conexion->prepare($consulta);
-    $sentencia->execute([$usuario, $clave]);
+    $sentencia->execute([$usuario]);
 
     if ($sentencia->rowCount() > 0) {
         $tupla = $sentencia->fetch(PDO::FETCH_ASSOC);
-        $respuesta["usuario"] = $tupla["user_name"];
-        $respuesta["mensaje"] = "Acceso correcto";
+        if(password_verify($clave, $tupla["clave"])) {
+            $respuesta["usuario"] = $tupla["user_name"];
+            $respuesta["mensaje"] = "Acceso correcto";
+        } else {
+            $respuesta["mensaje"] = "Usuario o contraseña incorrectos.";
+        }
     } else {
         $respuesta["mensaje"] = "Usuario o contraseña incorrectos.";
     }

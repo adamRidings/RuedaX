@@ -175,10 +175,6 @@
   color: #ffffff;
 }
 
-.nav-card-input::-webkit-calendar-picker-indicator{
-  filter: invert(1);
-}
-
 .nav-card-functionality-2{
   display: flex;
   flex-direction: column;
