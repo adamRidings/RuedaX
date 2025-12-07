@@ -95,7 +95,23 @@
   transition: background-color 0.3s ease;
 }
 
-.card-nav-cta-button:hover {
+.card-nav-cta-button-logged {
+  background-color: #C3401C;
+  border-radius: 10rem;
+  padding: 0.4rem;
+  border: none;
+  height: 45px;
+  width: 45px;
+  margin-right: 0.5rem;
+}
+
+.user-icon {
+  height: 30px;
+  width: 30px;
+}
+
+.card-nav-cta-button:hover, 
+.card-nav-cta-button-logged:hover {
   background-color: #333;
 }
 

@@ -15,6 +15,7 @@ import {
 import { PHPREGISTRO } from "../datos.js";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { toast } from "react-toastify";
 
 const VentanaRegistro = (props) => {
   const { className } = props;
@@ -43,10 +44,8 @@ const VentanaRegistro = (props) => {
         })
       .then((res) => {
         if (res.data.mensaje === "Acceso correcto") {
-          setVerAlerta(true);
-          setcolorAlerta("success");
-          setmsgAlerta("Registro exitoso");
-          props.registro(usuario);
+          toast.success("Registro exitoso");
+          props.registro(usuario, res.data.id_usuario);
         } else {
           setVerAlerta(true);
           setcolorAlerta("warning");

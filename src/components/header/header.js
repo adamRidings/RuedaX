@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { GoArrowRight, GoArrowUpRight } from 'react-icons/go';
 import './CardNav.css';
 import logoImg from '../../assets/icons/logo.png'
+import IconUsuario from '../../assets/icons/usuario.png'
 import { useNavigate } from 'react-router-dom';
 
 const CardNav = ({
@@ -11,6 +12,7 @@ const CardNav = ({
   className = '',
   ease = 'power3.out',
   toggleLogin,
+  logueado
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -159,6 +161,7 @@ const CardNav = ({
             <img src={logoImg} alt={"Logo"} className="logo" />
           </div>
 
+          {!logueado && (
           <button
             type="button"
             className="card-nav-cta-button"
@@ -166,6 +169,18 @@ const CardNav = ({
           >
             Login
           </button>
+          )}
+
+          {logueado && (
+          <button
+            type="button"
+            className="card-nav-cta-button-logged"
+            // onClick={() => toggleLogin()}
+          >
+            <img src={IconUsuario} alt={"User Icon"} className="user-icon" />
+          </button>
+          )}
+          
         </div>
         <div className="card-nav-content" aria-hidden={!isExpanded}>
           <div className="nav-card" ref={setCardRef('1')}>

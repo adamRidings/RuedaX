@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PHPVEHICULOS } from "../datos";
 import "./vender.css";
+import { toast } from "react-toastify";
 
 const Vender = (props) => {
     const location = useLocation();
@@ -30,12 +31,12 @@ const Vender = (props) => {
 
     const subirAnuncio = (e) => {
         e.preventDefault();
-        
+
         axios.post(PHPVEHICULOS, {
-            action:"crearAnuncio",
-            id_usuario: props.usuarioLogueado,
+            action: "crearAnuncio",
+            id_usuario: props.id_usuarioLogueado,
             tipoVendedor: tipoVendedor,
-            vehiculo:{
+            vehiculo: {
                 marca: marca,
                 modelo: modelo,
                 version: version,
@@ -50,20 +51,21 @@ const Vender = (props) => {
                 num_puertas: num_puertas,
                 descripcion: descripcion,
             },
-            anuncio:{
+            anuncio: {
                 titulo: titulo,
                 ubicacion: ubicacion,
-                nombreConcesionario: nombreConcesionario? nombreConcesionario : null,
+                nombreConcesionario: nombreConcesionario ? nombreConcesionario : null,
             }
         }).then((res) => {
-            if(res.data.mensaje === "Anuncio creado correctamente"){
-                alert("Anuncio publicado con éxito");
-                navigate("/");
+            if (res.data.mensaje === "Anuncio creado correctamente") {
+                toast.success("Anuncio publicado con éxito");
+                setTimeout(() => navigate("/"), 1500);
             } else {
-                alert("Error al publicar el anuncio: " + res.data.mensaje);
+                toast.error("Error al publicar el anuncio: " + res.data.mensaje);
             }
         });
     };
+
     return (
         <main className="vender-main">
             <div className="vender-header">
@@ -74,8 +76,7 @@ const Vender = (props) => {
             </div>
 
             <form className="form-vender" onSubmit={subirAnuncio}>
-                {/* BLOQUE: Datos del vehículo */}
-                <section className="form-section">
+                <section className="form-section" style={{ userSelect: "none", WebkitUserSelect: "none" }}>
                     <h3>Datos del vehículo</h3>
                     <div className="form-grid">
                         <div className="form-field">
@@ -149,12 +150,12 @@ const Vender = (props) => {
                                 onChange={(e) => setTipo_motor(e.target.value)}
                                 required
                             >
-                                <option value="" disabled>Selecciona...</option>
+                                <option value="">Selecciona tipo de motor</option>
+                                <option value="Hibrido">Híbrido</option>
+                                <option value="Hibrido enchufable">Híbrido enchufable</option>
                                 <option value="Gasolina">Gasolina</option>
-                                <option value="Diésel">Diésel</option>
-                                <option value="Eléctrico">Eléctrico</option>
-                                <option value="Híbrido">Híbrido</option>
-                                <option value="Híbrido enchufable">Híbrido enchufable</option>
+                                <option value="Diesel">Diésel</option>
+                                <option value="Electrico">Eléctrico</option>
                                 <option value="GLP (Gas Licuado de Petróleo)">GLP (Gas Licuado de Petróleo)</option>
                                 <option value="GNC (Gas Natural Comprimido)">GNC (Gas Natural Comprimido)</option>
                             </select>
@@ -167,9 +168,9 @@ const Vender = (props) => {
                                 onChange={(e) => setTransmision(e.target.value)}
                                 required
                             >
-                                <option value="" disabled>Selecciona...</option>
-                                <option value="Manual">Manual</option>
-                                <option value="Automática">Automática</option>
+                                <option value="">Selecciona...</option>
+                                <option value="manual">Manual</option>
+                                <option value="automatico">Automática</option>
                             </select>
                         </div>
 
@@ -177,8 +178,8 @@ const Vender = (props) => {
                             <label>Potencia (CV)</label>
                             <input
                                 type="number"
-                                min="40"
-                                max="1000"
+                                min="1"
+                                max="2000"
                                 value={potencia}
                                 onChange={(e) => setPotencia(e.target.value)}
                                 required
@@ -192,17 +193,18 @@ const Vender = (props) => {
                                 onChange={(e) => setTipo_carroceria(e.target.value)}
                                 required
                             >
-                                <option value="" disabled>Selecciona...</option>
-                                <option value="Compacto">Compacto</option>
+                                <option value="">Selecciona tipo de carrocería</option>
                                 <option value="Berlina">Berlina</option>
+                                <option value="Compacto">Compacto</option>
                                 <option value="SUV">SUV</option>
+                                <option value="Crossover">Crossover</option>
                                 <option value="Coupé">Coupé</option>
                                 <option value="Cabrio">Cabrio</option>
-                                <option value="Familiar">Familiar</option>
-                                <option value="Monovolumen">Monovolumen</option>
-                                <option value="Furgoneta">Furgoneta</option>
-                                <option value="Todoterreno">Todoterreno</option>
+                                <option value="Touring">Touring</option>
+                                <option value="Mono volumen">Monovolumen</option>
+                                <option value="Todo terreno">Todoterreno</option>
                                 <option value="Pick-up">Pick-up</option>
+                                <option value="Furgoneta">Furgoneta</option>
                                 <option value="Deportivo">Deportivo</option>
                             </select>
                         </div>
@@ -280,7 +282,7 @@ const Vender = (props) => {
                 </section>
 
                 <div className="form-actions">
-                    <button onClick={() => navigate("/")} className="btn-primary">
+                    <button type="button" onClick={() => navigate("/")} className="btn-primary">
                         Volver
                     </button>
                     <button type="submit" className="btn-primary">

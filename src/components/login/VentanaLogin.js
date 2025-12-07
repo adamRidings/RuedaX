@@ -15,6 +15,7 @@ import {
 import { PHPLOGIN } from "../datos.js";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { toast } from "react-toastify";
 
 const VentanaLogin = (props) => {
   const { className } = props;
@@ -38,10 +39,8 @@ const VentanaLogin = (props) => {
       .then((res) => {
         console.log(res.data);
         if (res.data.mensaje === "Acceso correcto") {
-          setVerAlerta(true);
-          setcolorAlerta("success");
-          setmsgAlerta("Login exitoso");
-          props.login(usuario);
+          toast.success("Login exitoso");
+          props.login(res.data.usuario, res.data.id_usuario);
         } else {
           setVerAlerta(true);
           setcolorAlerta("warning");
