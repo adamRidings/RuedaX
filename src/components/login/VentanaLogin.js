@@ -40,7 +40,7 @@ const VentanaLogin = (props) => {
         console.log(res.data);
         if (res.data.mensaje === "Acceso correcto") {
           toast.success("Login exitoso");
-          props.login(res.data.usuario, res.data.id_usuario);
+          props.login(res.data.usuario, res.data.id_usuario, res.data.datosUsuario);
         } else {
           setVerAlerta(true);
           setcolorAlerta("warning");

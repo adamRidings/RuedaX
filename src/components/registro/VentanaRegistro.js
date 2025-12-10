@@ -45,7 +45,7 @@ const VentanaRegistro = (props) => {
       .then((res) => {
         if (res.data.mensaje === "Acceso correcto") {
           toast.success("Registro exitoso");
-          props.registro(usuario, res.data.id_usuario);
+          props.registro(usuario, res.data.id_usuario, res.data.datosUsuario);
         } else {
           setVerAlerta(true);
           setcolorAlerta("warning");
@@ -58,6 +58,11 @@ const VentanaRegistro = (props) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   }
+
+  function esUserNameValido(userName) {
+        const regex = /^[a-zA-Z0-9_]{3,20}$/;
+        return regex.test(userName);
+    }
 
   function claveValida(clave) {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
@@ -79,6 +84,10 @@ const VentanaRegistro = (props) => {
       setVerAlerta(true);
       setcolorAlerta("danger");
       setmsgAlerta("Clave no válida, debe tener al menos 6 caracteres, una mayúscula, una minúscula, un número y un carácter especial");
+    }else if(!esUserNameValido(usuario)){
+      setVerAlerta(true);
+      setcolorAlerta("danger");
+      setmsgAlerta("Nombre de usuario no válido, debe tener entre 3 y 20 caracteres y solo puede contener letras, números y guiones bajos.");
     } else {
       registro(nombre, apellido, email, usuario, clave);
     }

@@ -28,9 +28,20 @@ const Vender = (props) => {
     const [color, setColor] = useState();
     const [num_puertas, setNum_puertas] = useState();
     const [potencia, setPotencia] = useState();
+    const [fotos, setFotos] = useState([]);
+
+    const handleImagenChange = (e) => {
+        //Convertir FileList a Array
+        setFotos(Array.from(e.target.files));
+    }
 
     const subirAnuncio = (e) => {
         e.preventDefault();
+
+        if (!props.logueado) {
+            toast.error("Debes iniciar sesión para publicar un anuncio.");
+            return;
+        }
 
         axios.post(PHPVEHICULOS, {
             action: "crearAnuncio",
@@ -58,11 +69,47 @@ const Vender = (props) => {
             }
         }).then((res) => {
             if (res.data.mensaje === "Anuncio creado correctamente") {
-                toast.success("Anuncio publicado con éxito");
-                setTimeout(() => navigate("/"), 1500);
+                const id_vehiculo = res.data.id_vehiculo;
+
+                // Subir imágenes solo si hay
+                if (fotos.length > 0) {
+                    const formData = new FormData();
+                    formData.append("action", "insertarImagenes");
+                    formData.append("id_vehiculo", id_vehiculo);
+
+                    fotos.forEach((foto) => {
+                        formData.append("fotos[]", foto);
+                    });
+
+                    axios
+                        .post(PHPVEHICULOS, formData, {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        })
+                        .then((resImagenes) => {
+                            if (resImagenes.data.mensaje === "Imágenes subidas correctamente") {
+                                toast.success("Anuncio publicado con éxito");
+                                navigate("/");
+                            } else {
+                                toast.error("Error al subir las imágenes: " + resImagenes.data.mensaje);
+                            }
+                        })
+                        .catch(() => {
+                            toast.error("Error al subir las imágenes.");
+                        });
+
+                } else {
+                    // No hay fotos, pero el anuncio se ha creado bien
+                    toast.success("Anuncio publicado con éxito (sin fotos).");
+                    navigate("/");
+                }
+
             } else {
                 toast.error("Error al publicar el anuncio: " + res.data.mensaje);
             }
+        }).catch(() => {
+            toast.error("Error al comunicar con el servidor.");
         });
     };
 
@@ -75,7 +122,7 @@ const Vender = (props) => {
                 </p>
             </div>
 
-            <form className="form-vender" onSubmit={subirAnuncio}>
+            <form className="form-vender" onSubmit={subirAnuncio} encType="multipart/form-data">
                 <section className="form-section" style={{ userSelect: "none", WebkitUserSelect: "none" }}>
                     <h3>Datos del vehículo</h3>
                     <div className="form-grid">
@@ -264,6 +311,16 @@ const Vender = (props) => {
                                 value={ubicacion}
                                 onChange={(e) => setUbicacion(e.target.value)}
                                 required
+                            />
+                        </div>
+
+                        <div className="form-field">
+                            <label>Fotos del vehiculo</label>
+                            <input
+                                type="file"
+                                multiple
+                                onChange={handleImagenChange}
+                                accept="image/*"
                             />
                         </div>
 

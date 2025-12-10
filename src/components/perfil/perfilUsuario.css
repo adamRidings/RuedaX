@@ -1,0 +1,112 @@
+/* Contenedor principal del modal */
+.modal-perfil-usuario .modal-content {
+  background-color: #FFFFFF;     
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7);
+  color: #000000;
+}
+
+/* Cabecera */
+.modal-perfil-header {
+  font-weight: 600;
+  padding-bottom: 6rem;
+}
+
+/* Body */
+.modal-perfil-body {
+  padding: 1.5rem 1.7rem 1.4rem;
+}
+
+.modal-perfil-titulo-seccion {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: #000000;
+}
+
+/* Campos */
+.modal-perfil-field {
+  margin-bottom: 0.9rem;
+}
+
+.modal-perfil-field-dos-columnas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.9rem 1.2rem;
+}
+
+.modal-perfil-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Labels */
+.modal-perfil-body label {
+  font-size: 0.9rem;
+  color: #000000;
+  margin-bottom: 0.3rem;
+}
+
+/* Inputs */
+.modal-perfil-body input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #0a121a;
+  color: #000000;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.modal-perfil-body input:focus {
+  border-color: #C3401C;
+  box-shadow: 0 0 0 2px #6b1700;
+}
+
+/* Input con icono de editar */
+.modal-perfil-input-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.icono-editar {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.icono-editar:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Footer y botón */
+.btn-cerrar-perfil {
+  border-radius: 999px;
+  background-color: #C3401C;
+  border: none;
+  padding: 0.45rem 1.4rem;
+  font-weight: 500;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-cerrar-perfil:hover {
+  background-color: #f7582c;
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.btn-cerrar-perfil:active {
+  transform: translateY(0);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .modal-perfil-body {
+    padding: 1.2rem 1.1rem 1.1rem;
+  }
+}

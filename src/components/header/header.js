@@ -12,7 +12,8 @@ const CardNav = ({
   className = '',
   ease = 'power3.out',
   toggleLogin,
-  logueado
+  logueado,
+  togglePerfil
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -175,7 +176,7 @@ const CardNav = ({
           <button
             type="button"
             className="card-nav-cta-button-logged"
-            // onClick={() => toggleLogin()}
+            onClick={() => togglePerfil()}
           >
             <img src={IconUsuario} alt={"User Icon"} className="user-icon" />
           </button>

@@ -43,11 +43,12 @@ try {
             if ($sentenciaInsertar->rowCount() > 0) {
                 $respuesta["mensaje"] = "Acceso correcto";
                 
-                $selectID = "SELECT `id_usuario` FROM `usuarios` WHERE `user_name` = ?";
+                $selectID = "SELECT * FROM `usuarios` WHERE `user_name` = ?";
                 $sentenciaID = $conexion->prepare($selectID);
                 $sentenciaID->execute([$usuario]);
                 $tupla = $sentenciaID->fetch(PDO::FETCH_ASSOC);
                 $respuesta["id_usuario"] = $tupla["id_usuario"];
+                $respuesta["datosUsuario"] = $tupla;
             } else {
                 $respuesta["mensaje"] = "Error al registrar el usuario.";
             }

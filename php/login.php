@@ -34,6 +34,7 @@ try {
         if(password_verify($clave, $tupla["clave"])) {
             $respuesta["usuario"] = $tupla["user_name"];
             $respuesta["id_usuario"] = $tupla["id_usuario"];
+            $respuesta["datosUsuario"] = $tupla;
             $respuesta["mensaje"] = "Acceso correcto";
         } else {
             $respuesta["mensaje"] = "Usuario o contraseña incorrectos.";
