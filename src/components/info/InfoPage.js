@@ -1,6 +1,7 @@
 import { GoArrowLeft } from "react-icons/go";
 import "./infoPage.css";
 
+// Página informativa estática con secciones básicas
 const InfoPage = () => {
   return (
     <main className="info-page">

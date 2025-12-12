@@ -30,6 +30,7 @@ const VentanaRegistro = (props) => {
   const [msgAlerta, setmsgAlerta] = useState();
   const [colorAlerta, setcolorAlerta] = useState();
 
+  // Llama al backend para registrar al usuario
   const registro = (nombre, apellido, email, usuario, clave) => {
     axios
       .post(PHPREGISTRO, {
@@ -59,16 +60,19 @@ const VentanaRegistro = (props) => {
       });
   };
 
+  // Valida formato de email
   function esEmailValido(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   }
 
+  // Valida formato de usuario
   function esUserNameValido(userName) {
         const regex = /^[a-zA-Z0-9_]{3,20}$/;
         return regex.test(userName);
     }
 
+  // Valida fortaleza de la clave
   function claveValida(clave) {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
     return regex.test(clave);
@@ -76,6 +80,7 @@ const VentanaRegistro = (props) => {
 
 
 
+  // Valida campos antes de enviar al backend
   const validarDatos = () => {
     if ( !nombre || !apellido || !email || !usuario || !clave) {
       setVerAlerta(true);
@@ -98,6 +103,7 @@ const VentanaRegistro = (props) => {
     }
   };
 
+  // Maneja cambios de inputs y actualiza estado
   const handleChange = (event) => {
     let target = event.target;
 

@@ -23,6 +23,7 @@ const MostrarAnuncios = (props) => {
   const [cargandoFavoritos, setCargandoFavoritos] = useState(false);
   const [errorFavoritos, setErrorFavoritos] = useState("");
 
+  // Prefetch de favoritos cuando se llega desde "Ver Favoritos"
   useEffect(() => {
     if (!verFavoritos || !id_usuario) {
       setAnunciosFavoritos([]);
@@ -84,10 +85,10 @@ const MostrarAnuncios = (props) => {
     precioHasta,
   } = location.state || {};
 
+  // Lista base: favoritos si se pidió ver favoritos, sino todos
   const baseAnuncios = verFavoritos ? anunciosFavoritos : anuncios;
 
-  // Fi
-  console.log("Filtros aplicados:", { marca, modelo, anio });
+  // Aplica filtros sobre la lista base
   const anunciosFiltrados = baseAnuncios.filter((anuncio) => {
     if (
       marca &&

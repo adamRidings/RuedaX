@@ -28,6 +28,7 @@ const VentanaFiltroAvanzado = (props) => {
   const [precioDesde, setPrecioDesde] = useState("");
   const [precioHasta, setPrecioHasta] = useState("");
 
+  // Limpia todos los campos del filtro
   const resetFiltros = () => {
     setMarcaAv("");
     setModeloAv("");
@@ -44,6 +45,7 @@ const VentanaFiltroAvanzado = (props) => {
     setPrecioHasta("");
   };
 
+  // Navega a la home con los filtros aplicados
   const aplicarFiltros = () => {
     navigate("/", { 
       state: { 

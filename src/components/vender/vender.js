@@ -11,7 +11,7 @@ const Vender = (props) => {
     const navigate = useNavigate();
     const tipoVendedor = location.state?.tipo || "particular";
 
-    //Datos formulario necesarios para inseratar vehiculo y anuncio
+    // Datos formulario necesarios para insertar vehiculo y anuncio
     const [titulo, setTitulo] = useState();
     const [ubicacion, setUbicacion] = useState();
     const [nombreConcesionario, setNombreConcesionario] = useState();
@@ -30,14 +30,14 @@ const Vender = (props) => {
     const [potencia, setPotencia] = useState();
     const [fotos, setFotos] = useState([]);
 
+    // Maneja selección y acumulado de imágenes
     const handleImagenChange = (e) => {
-        //Convertir FileList a Array y acumular con las fotos anteriores
         const newFiles = Array.from(e.target.files);
         setFotos(prev => [...prev, ...newFiles]);
-        // Limpiar el input para permitir seleccionar más archivos
         e.target.value = '';
     }
 
+    // Envia el anuncio y, si hay, las imágenes
     const subirAnuncio = (e) => {
         e.preventDefault();
 

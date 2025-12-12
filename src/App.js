@@ -38,6 +38,7 @@ class App extends Component {
     this.obtenerAnuncios();
   }
 
+  // Obtiene los anuncios del backend
   obtenerAnuncios() {
     axios
       .post(
@@ -55,20 +56,7 @@ class App extends Component {
       });
   }
 
-  obtenerAnuncios() {
-    this.setState({ cargandoAnuncios: true, errorAnuncios: "" });
-    axios
-      .post(PHPVEHICULOS, { action: "obtenerAnuncios" })
-      .then((response) => {
-        console.log("Anuncios obtenidos:", response.data.anuncios);
-        this.setState({ anuncios: response.data.anuncios, cargandoAnuncios: false });
-      })
-      .catch((error) => {
-        console.error("Error al obtener anuncios:", error);
-        this.setState({ cargandoAnuncios: false, errorAnuncios: "No se pudieron cargar los anuncios." });
-      });
-  }
-
+  // Toggle modales
   toggleLogin() {
     this.setState({ mostrarLogin: !this.state.mostrarLogin });
   }
@@ -88,6 +76,7 @@ class App extends Component {
     this.setState({ mostrarFiltroAvanzado: !this.state.mostrarFiltroAvanzado });
   }
 
+  // Cierra sesión y limpia token/temporizador
   cerrarSesion() {
     if (this.logoutTimer) {
       clearTimeout(this.logoutTimer);
@@ -104,6 +93,7 @@ class App extends Component {
     localStorage.removeItem("rx_token");
   }
 
+  // Programa logout según expiración del token
   scheduleTokenTimeout(token) {
     if (this.logoutTimer) {
       clearTimeout(this.logoutTimer);
@@ -127,6 +117,7 @@ class App extends Component {
     }
   }
 
+  // Setea estado tras login/registro y guarda token
   loguearUsuario(usuario, id_usuario, datosUsuario, token) {
     this.setState({
       logueado: true,
@@ -143,6 +134,7 @@ class App extends Component {
     }
   }
 
+  // Actualiza datos del usuario logueado en el estado
   actualizarDatosUsuarioLogueado(nuevosDatos) {
     this.setState({
       datosUsuarioLogueado: nuevosDatos,

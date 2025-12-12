@@ -294,7 +294,7 @@ try {
                 ];
             }
 
-            // Añadir foto si existe (LEFT JOIN puede traer NULL)
+            // Añadir foto si existe 
             if (!empty($row['foto_id_foto'])) {
                 $anunciosAgrupados[$idAnuncio]['fotos'][] = [
                     'id_foto'      => $row['foto_id_foto'],

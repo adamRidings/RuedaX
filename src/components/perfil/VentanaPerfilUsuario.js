@@ -22,12 +22,13 @@ const VentanaPerfilUsuario = (props) => {
     const [verAlerta, setVerAlerta] = useState(false);
     const [msgAlerta, setmsgAlerta] = useState("");
     const [colorAlerta, setcolorAlerta] = useState("info");
-    const [editarActivo, setEditarActivo] = useState(false); // <- AHORA ES STATE
+    const [editarActivo, setEditarActivo] = useState(false);
     const [nuevoEmail, setNuevoEmail] = useState("");
     const [nuevoUserName, setNuevoUserName] = useState("");
 
     const datosUsuario = props.datosUsuario;
 
+    // Valida y envía cambios de email/user al backend
     const actualizarUsuario = () => {
         const authToken = props.token || localStorage.getItem("rx_token");
         if (!authToken) {
@@ -92,16 +93,19 @@ const VentanaPerfilUsuario = (props) => {
             });
     };
 
+    // Valida formato de email
     function esEmailValido(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     }
 
+    // Valida formato de userName
     function esUserNameValido(userName) {
         const regex = /^[a-zA-Z0-9_]{3,20}$/;
         return regex.test(userName);
     }
 
+    // Actualiza estado de email/username en edición
     const handleChange = (event) => {
         let target = event.target;
 
@@ -114,6 +118,7 @@ const VentanaPerfilUsuario = (props) => {
         }
     };
 
+    // Alterna modo edición y precarga valores actuales
     const editarCampo = () => {
         setEditarActivo(prev => {
             const nuevo = !prev;
@@ -132,6 +137,7 @@ const VentanaPerfilUsuario = (props) => {
         });
     };
 
+    // Navega a favoritos cerrando el modal de perfil
     const irAFavoritos = () => {
         props.toggle(); // cerrar modal
         navigate("/", {

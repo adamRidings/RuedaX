@@ -27,6 +27,7 @@ const VentanaLogin = (props) => {
   const [msgAlerta, setmsgAlerta] = useState();
   const [colorAlerta, setcolorAlerta] = useState();
 
+  // Llama al backend para iniciar sesión
   const login = (usuario, clave) => {
     axios
       .post(PHPLOGIN, {
@@ -54,6 +55,7 @@ const VentanaLogin = (props) => {
       });
   };
 
+  // Valida inputs antes de llamar al backend
   const validarDatos = () => {
     if (!usuario || !clave) {
       setVerAlerta(true);
@@ -64,6 +66,7 @@ const VentanaLogin = (props) => {
     }
   };
 
+  // Actualiza estado de usuario/clave
   const handleChange = (event) => {
     let target = event.target;
 

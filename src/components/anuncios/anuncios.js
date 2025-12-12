@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 const Anuncio = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const id_anuncio = location.state?.id_anuncio;
+  const id_anuncio = location.state?.id_anuncio; // id pasado por navigate
   const datosAnuncio = props.anuncios?.find(
     (anuncio) => anuncio.anuncio_id_anuncio == id_anuncio
   );
@@ -54,6 +54,7 @@ const Anuncio = (props) => {
     setActiveIndex(newIndex);
   };
 
+  // Construye las slides del carrusel si no hay fotos usa un placeholder
   const slides =
     datosAnuncio.fotos && datosAnuncio.fotos.length > 0
       ? datosAnuncio.fotos.map((foto, index) => (
@@ -79,13 +80,14 @@ const Anuncio = (props) => {
           </CarouselItem>,
         ];
 
+  // Alterna el favorito del anuncio actual
   const handleToggleFavorito = async () => {
 
     if (!props.logueado) {
       toast.warning('Necesitas iniciar session para marcar favoritos')
       return;
     }
-    const authToken = props.token || localStorage.getItem("rx_token");
+    const authToken = props.token || localStorage.getItem("rx_token"); // fallback al token guardado
     if (!authToken) {
       toast.error("No se encontró token de sesión");
       return;
@@ -116,6 +118,7 @@ const Anuncio = (props) => {
     }
   };
 
+  // Consulta si el anuncio ya está en favoritos al cargar
   useEffect(() => {
     const authToken = props.token || localStorage.getItem("rx_token");
     if (!idUsuarioActual || !id_anuncio || !authToken) return;

@@ -24,6 +24,7 @@ const CardNav = ({
   const [modelo, setModelo] = useState();
   const [anio, setAnio] = useState();
 
+  // Calcula la altura del contenedor animado (desktop/mobile)
   const calculateHeight = () => {
     const navEl = navRef.current;
     if (!navEl) return 260;
@@ -60,6 +61,7 @@ const CardNav = ({
     return 260;
   };
 
+  // Crea la timeline de apertura/cierre para el menú
   const createTimeline = () => {
     const navEl = navRef.current;
     if (!navEl) return null;
@@ -84,6 +86,7 @@ const CardNav = ({
     return tl;
   };
 
+  // Inicializa timeline y la destruye en cleanup
   useLayoutEffect(() => {
     const tl = createTimeline();
     tlRef.current = tl;
@@ -95,6 +98,7 @@ const CardNav = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ease, items]);
 
+  // Recalcula altura/animación en resize
   useLayoutEffect(() => {
     const handleResize = () => {
       if (!tlRef.current) return;
@@ -123,6 +127,7 @@ const CardNav = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
+  // Abre/cierra el menú animado
   const toggleMenu = () => {
     const tl = tlRef.current;
     if (!tl) return;
@@ -137,18 +142,20 @@ const CardNav = ({
     }
   };
 
+  // Guarda refs de las tarjetas para animación
   const setCardRef = (i) => (el) => {
     if (el) cardsRef.current[i] = el;
   };
 
+  // Navegar a vender según tipo y cerrar menú
   const handlerVenderView = (tipo) => {
-    // Navegar a la vista de vender con el tipo seleccionado
     navigate("/vender", { state: { tipo } });
 
     // Cerrar el menú después de la navegación
     toggleMenu();
   };
 
+  // Aplica filtros rápidos (marca/modelo/año) y cierra menú
   const filtrarAnuncios = () => {
     navigate("/", { state: { marca, modelo, anio } });
     toggleMenu();
