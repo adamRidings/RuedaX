@@ -40,12 +40,17 @@ const VentanaLogin = (props) => {
         console.log(res.data);
         if (res.data.mensaje === "Acceso correcto") {
           toast.success("Login exitoso");
-          props.login(res.data.usuario, res.data.id_usuario, res.data.datosUsuario);
+          props.login(res.data.usuario, res.data.id_usuario, res.data.datosUsuario, res.data.token);
         } else {
           setVerAlerta(true);
           setcolorAlerta("warning");
           setmsgAlerta("Usurio y/o clave erroneos");
         }
+      })
+      .catch(() => {
+        setVerAlerta(true);
+        setcolorAlerta("danger");
+        setmsgAlerta("Error conectando con el servidor.");
       });
   };
 

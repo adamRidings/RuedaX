@@ -39,7 +39,7 @@
   height: 100%;
   color: yellow;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -227,6 +227,13 @@
   text-decoration: none;
 }
 
+.nav-card-link{
+  color: white;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+}
+
 @media (max-width: 768px) {
   .card-nav-container {
     width: 90%;
@@ -249,7 +256,8 @@
   }
 
   .card-nav-cta-button {
-    display: none;
+    height: 2rem;
+    width: auto;
   }
 
   .card-nav-content {

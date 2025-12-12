@@ -45,12 +45,17 @@ const VentanaRegistro = (props) => {
       .then((res) => {
         if (res.data.mensaje === "Acceso correcto") {
           toast.success("Registro exitoso");
-          props.registro(usuario, res.data.id_usuario, res.data.datosUsuario);
+          props.registro(usuario, res.data.id_usuario, res.data.datosUsuario, res.data.token);
         } else {
           setVerAlerta(true);
           setcolorAlerta("warning");
           setmsgAlerta(res.data.mensaje);
         }
+      })
+      .catch(() => {
+        setVerAlerta(true);
+        setcolorAlerta("danger");
+        setmsgAlerta("Error conectando con el servidor.");
       });
   };
 

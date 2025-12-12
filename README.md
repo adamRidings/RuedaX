@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# RuedaX
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación de compraventa de vehículos con frontend React y backend PHP (JWT). Este README resume instalación, entorno, scripts y plan de pruebas mínimo.
 
-## Available Scripts
+## Requisitos y entorno
+- Node 18+ y npm
+- PHP 8+ con MySQL
+- Backend servido en `http://localhost/RuedaX/php` (ajusta según tu host)
+- Variables de entorno recomendadas (backend):
+  - `JWT_SECRET` (mover la clave fuera del código)
+  - Credenciales de BD: host, user, pass, nombre BD
 
-In the project directory, you can run:
+## Instalación
+1. `npm install`
+2. Configura el backend (PHP) con las credenciales y `JWT_SECRET` en variables de entorno/constantes seguras.
+3. Arranca frontend: `npm start` (CRA en `http://localhost:3000`).
+4. Arranca backend PHP (Apache/XAMPP o similar) sirviendo `/php` y `/uploads`.
 
-### `npm start`
+## Scripts útiles
+- `npm start` – modo desarrollo.
+- `npm run build` – build producción.
+- `npm test` – test runner de CRA (ajusta para unitarios).
+- Lint rápido: `npx eslint ./src` (usa la config CRA incluida).
+- Formato opcional: `npx prettier "src/**/*.{js,jsx,css,md}" --check`.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Endpoints clave (PHP)
+- `login.php` / `registro.php` – devuelven token JWT.
+- `vehiculos.php` – acciones `obtenerAnuncios`, `crearAnuncio`, `insertarImagenes`, `aniadir_quitar_favorito`, `obtenerFavoritos`, `obtener_favorito` (protegidos con Bearer).
+- `usuario.php` – actualización de usuario (Bearer).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Plan de pruebas (resumen)
+Columna sugerida: ID | Objetivo | Datos/Pasos | Resultado esperado | Prioridad | Estado.
 
-### `npm test`
+- TC-01 Login válido (Crítico): credenciales correctas → acceso, token recibido.
+- TC-02 Login inválido (Alto): pass errónea → mensaje error, sin token.
+- TC-03 Token expirado (Crítico): usar token caducado en favoritos → 401, logout, aviso.
+- TC-04 Registro duplicado (Alto): email/user existente → “ya existe”, no crea cuenta.
+- TC-05 Crear anuncio con fotos (Crítico): datos obligatorios + 2 JPG → anuncio en listado, fotos visibles.
+- TC-06 Crear anuncio sin fotos (Medio): datos obligatorios → anuncio en listado sin fotos.
+- TC-07 Subir archivo no imagen (Alto): JPG + .exe → .exe rechazado, error mostrado.
+- TC-08 Eliminar/ocultar anuncio (Crítico): desaparece de listado público.
+- TC-09 Favorito persistente (Crítico): marcar/desmarcar → persiste tras recarga y reentrar.
+- TC-10 Filtros combinados (Alto): marca+precio+kms → solo coincidencias; vacío si no hay match.
+- TC-11 Validaciones formularios (Alto): obligatorios vacíos/formato inválido → bloquea envío, muestra mensajes.
+- TC-12 Compatibilidad (Medio): Chrome/Firefox/Edge móvil/desktop → UI usable, sin solapes.
+- TC-13 Rendimiento (Medio): `/php/vehiculos.php` acción `obtenerAnuncios` < umbral; subir imágenes < umbral.
+- TC-14 Accesibilidad (Medio): tabulación completa, foco visible, textos alternativos, contraste AA (axe/lighthouse).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Ejecución de pruebas
+- Manual: seguir TC con datos de prueba y registrar Estado/Evidencia.
+- Automático sugerido (no incluido):
+  - Unit/Integración PHP: tests de endpoints login/registro/anuncios/favoritos contra BD de pruebas (PHPUnit o scripts curl en CI).
+  - E2E (Cypress/Playwright): flujos login+favorito y publicar anuncio (incluyendo subida de archivos y expiración de token simulada).
+  - Accesibilidad: auditoría con `npx lighthouse` o `axe` en vistas principales.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Criterio de salida
+- 100% de TC críticos aprobados, sin bloqueantes/altos abiertos.
+- Incidencias documentadas y reprobadas tras corrección.

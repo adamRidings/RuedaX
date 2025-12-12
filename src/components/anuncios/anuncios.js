@@ -7,23 +7,29 @@ import {
   CarouselControl,
   CarouselIndicators,
 } from "reactstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GoArrowLeft } from "react-icons/go";
+import fav_desc from  "../../assets/icons/fav_desc.png";
+import fav_act from  "../../assets/icons/fav_act.png";
+import { PHPVEHICULOS } from "../datos.js";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Anuncio = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const id_anuncio = location.state?.id_anuncio;
-  const datosAnuncio = props.anuncios.find(
+  const datosAnuncio = props.anuncios?.find(
     (anuncio) => anuncio.anuncio_id_anuncio == id_anuncio
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [position, setPosition] = useState(false);
-
-  if (!datosAnuncio) {
-    return <p>Anuncio no encontrado.</p>;
-  }
+  const [favoritoActivo, setFavoritoActivo] = useState(false);
+  const idUsuarioActual =
+    props.id_usuarioLogueado ||
+    props.usuarioLogueado?.id_usuario ||
+    props.usuario?.id_usuario;
 
   const handleContactar = () => {
 
@@ -72,6 +78,78 @@ const Anuncio = (props) => {
             />
           </CarouselItem>,
         ];
+
+  const handleToggleFavorito = async () => {
+
+    if (!props.logueado) {
+      toast.warning('Necesitas iniciar session para marcar favoritos')
+      return;
+    }
+    const authToken = props.token || localStorage.getItem("rx_token");
+    if (!authToken) {
+      toast.error("No se encontró token de sesión");
+      return;
+    }
+
+    try {
+      const { data } = await axios.post(
+        PHPVEHICULOS,
+        {
+          action: "aniadir_quitar_favorito",
+          id_usuario: idUsuarioActual,
+          id_anuncio,
+        },
+        { headers: { "Content-Type": "application/json", Authorization: `Bearer ${authToken}` } }
+      );
+
+      if (typeof data?.favorito_activo === "boolean") {
+        setFavoritoActivo(data.favorito_activo);
+      }
+    } catch (error) {
+      console.error("Error al alternar favorito", error);
+      if (error?.response?.status === 401 && props.onAuthError) {
+        toast.error("Sesión expirada, inicia sesión de nuevo.");
+        props.onAuthError();
+      } else {
+        toast.error("No se pudo actualizar el favorito.");
+      }
+    }
+  };
+
+  useEffect(() => {
+    const authToken = props.token || localStorage.getItem("rx_token");
+    if (!idUsuarioActual || !id_anuncio || !authToken) return;
+
+    const consultarFavorito = async () => {
+      try {
+        const { data } = await axios.post(
+          PHPVEHICULOS,
+          {
+            action: "obtener_favorito",
+            id_usuario: idUsuarioActual,
+            id_anuncio,
+          },
+          { headers: { "Content-Type": "application/json", Authorization: `Bearer ${authToken}` } }
+        );
+        if (typeof data?.favorito_activo === "boolean") {
+          setFavoritoActivo(data.favorito_activo);
+        }
+      } catch (error) {
+        console.error("Error al consultar favorito", error);
+        if (error?.response?.status === 401 && props.onAuthError) {
+          toast.error("Sesión expirada, inicia sesión de nuevo.");
+          props.onAuthError();
+        }
+      }
+    };
+
+    consultarFavorito();
+  }, [idUsuarioActual, id_anuncio, props.token]);
+
+  if (!datosAnuncio) {
+    return <p>Anuncio no encontrado.</p>;
+  }
+
   return (
     <main className="anuncio-detalle">
       <div className="anuncio-header">
@@ -81,6 +159,17 @@ const Anuncio = (props) => {
           className="btn-back"
         >
           <GoArrowLeft />
+        </Button>
+        <Button
+          type="button"
+          className={`btn-favarito ${favoritoActivo ? "is-active" : ""}`}
+          onClick={handleToggleFavorito}
+          aria-pressed={favoritoActivo}
+        >
+          <img
+            src={favoritoActivo ? fav_act : fav_desc}
+            alt={favoritoActivo ? "Anuncio en favoritos" : "Agregar a favoritos"}
+          />
         </Button>
         <h1>{datosAnuncio.anuncio_titulo}</h1>
         <p className="anuncio-ubicacion">{datosAnuncio.anuncio_ubicacion}</p>
@@ -116,9 +205,6 @@ const Anuncio = (props) => {
         <div className="anuncio-info">
           <div className="anuncio-precio">
             <h2>{datosAnuncio.vehiculo_precio} €</h2>
-            <Button onClick={handleContactar} className="btn-contactar">
-              Contactar al vendedor
-            </Button>
           </div>
 
           <div className="anuncio-detalles">
@@ -199,6 +285,10 @@ const Anuncio = (props) => {
                 {datosAnuncio.usuario_nombre +
                   " " +
                   datosAnuncio.usuario_apellidos}
+              </p>
+              <p>
+                <strong>Email:</strong>{" "}
+                {datosAnuncio.usuario_email}
               </p>
               <p>
                 <strong>Tipo de vendedor:</strong>{" "}

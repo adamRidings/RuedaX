@@ -1,11 +1,17 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 define("SERVIDOR_BD","localhost");
 define("USUARIO_BD","jose");
 define("CLAVE_BD","josefa");
 define("NOMBRE_BD","bd_ruedax");
+require_once __DIR__ . "/auth.php";
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 $_POST = json_decode(file_get_contents("php://input"), true);
 
@@ -21,6 +27,8 @@ try {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]
     );
+
+    $payloadAuth = requerir_auth($_POST ?? []);
 
     $id = $_POST["id_usuario"] ?? null;
     $email = trim($_POST["email"] ?? "");

@@ -45,6 +45,11 @@ const Vender = (props) => {
             toast.error("Debes iniciar sesión para publicar un anuncio.");
             return;
         }
+        const authToken = props.token || localStorage.getItem("rx_token");
+        if (!authToken) {
+            toast.error("Token de sesión no encontrado, vuelve a iniciar sesión.");
+            return;
+        }
 
         axios.post(PHPVEHICULOS, {
             action: "crearAnuncio",
@@ -70,6 +75,11 @@ const Vender = (props) => {
                 ubicacion: ubicacion,
                 nombreConcesionario: nombreConcesionario ? nombreConcesionario : null,
             }
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${authToken}`
+            }
         }).then((res) => {
             if (res.data.mensaje === "Anuncio creado correctamente") {
                 const id_vehiculo = res.data.id_vehiculo;
@@ -88,6 +98,7 @@ const Vender = (props) => {
                         .post(PHPVEHICULOS, formData, {
                             headers: {
                                 "Content-Type": "multipart/form-data",
+                                Authorization: `Bearer ${authToken}`
                             },
                         })
                         .then((resImagenes) => {
@@ -98,8 +109,13 @@ const Vender = (props) => {
                                 toast.error("Error al subir las imágenes: " + resImagenes.data.mensaje);
                             }
                         })
-                        .catch(() => {
-                            toast.error("Error al subir las imágenes.");
+                        .catch((err) => {
+                            if (err?.response?.status === 401 && props.onAuthError) {
+                                toast.error("Sesión expirada, inicia sesión de nuevo.");
+                                props.onAuthError();
+                            } else {
+                                toast.error("Error al subir las imágenes.");
+                            }
                         });
 
                 } else {
@@ -111,8 +127,13 @@ const Vender = (props) => {
             } else {
                 toast.error("Error al publicar el anuncio: " + res.data.mensaje);
             }
-        }).catch(() => {
-            toast.error("Error al comunicar con el servidor.");
+        }).catch((err) => {
+            if (err?.response?.status === 401 && props.onAuthError) {
+                toast.error("Sesión expirada, inicia sesión de nuevo.");
+                props.onAuthError();
+            } else {
+                toast.error("Error al comunicar con el servidor.");
+            }
         });
     };
 

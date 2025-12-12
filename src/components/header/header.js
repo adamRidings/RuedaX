@@ -255,29 +255,64 @@ const CardNav = ({
             <div className="nav-card-functionality-3">
               <ul className="nav-card-list">
                 <li className="nav-card-list-item">
-                  <a href="#">
+                  <button
+                    type="button"
+                    className="nav-card-link"
+                    onClick={() => {
+                      navigate("/info");
+                      toggleMenu();
+                    }}
+                  >
                     Quiénes somos <GoArrowUpRight />
-                  </a>
+                  </button>
                 </li>
                 <li className="nav-card-list-item">
-                  <a href="#">
+                  <button
+                    type="button"
+                    className="nav-card-link"
+                    onClick={() => {
+                      navigate("/info");
+                      toggleMenu();
+                    }}
+                  >
                     Contacto <GoArrowUpRight />
-                  </a>
+                  </button>
                 </li>
                 <li className="nav-card-list-item">
-                  <a href="#">
+                  <button
+                    type="button"
+                    className="nav-card-link"
+                    onClick={() => {
+                      navigate("/info");
+                      toggleMenu();
+                    }}
+                  >
                     Preguntas frecuentes <GoArrowUpRight />
-                  </a>
+                  </button>
                 </li>
                 <li className="nav-card-list-item">
-                  <a href="#">
+                  <button
+                    type="button"
+                    className="nav-card-link"
+                    onClick={() => {
+                      navigate("/info");
+                      toggleMenu();
+                    }}
+                  >
                     Blog <GoArrowUpRight />
-                  </a>
+                  </button>
                 </li>
                 <li className="nav-card-list-item">
-                  <a href="#">
+                  <button
+                    type="button"
+                    className="nav-card-link"
+                    onClick={() => {
+                      navigate("/info");
+                      toggleMenu();
+                    }}
+                  >
                     Términos y privacidad <GoArrowUpRight />
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>

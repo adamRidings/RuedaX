@@ -24,6 +24,35 @@
   background-color: #3d5a80;
 }
 
+.btn-favarito {
+  position: absolute;
+  background-color: transparent;
+  right: 1rem;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-favarito,
+.btn-favarito:hover,
+.btn-favarito:focus,
+.btn-favarito:active {
+  background-color: transparent !important;
+  box-shadow: none;
+}
+
+.btn-favarito img {
+  width: 28px;
+  height: 28px;
+}
+
+.btn-favarito:hover img {
+  transform: scale(1.1);
+}
+
+.btn-favarito.is-active img {
+  filter: saturate(1.6);
+}
+
 .anuncio-header h1 {
   margin-left: 4rem;
 }
@@ -53,7 +82,6 @@
   border-radius: 8px;
 }
 
-/* Estilos para los controles del carrusel */
 .carousel-control-prev,
 .carousel-control-next {
   margin: 2em;
@@ -92,20 +120,6 @@
   font-size: 2.5rem;
   color: #c6532b;
   font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.btn-contactar {
-  background-color: #c6532b;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 2rem;
-  font-weight: 600;
-  width: 100%;
-}
-
-.btn-contactar:hover {
-  background-color: #3d5a80;
 }
 
 .anuncio-detalles {

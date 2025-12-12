@@ -1,11 +1,12 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 define("SERVIDOR_BD","localhost");
 define("USUARIO_BD","jose");
 define("CLAVE_BD","josefa");
 define("NOMBRE_BD","bd_ruedax");
+require_once __DIR__ . "/auth.php";
 
 $_POST = json_decode(file_get_contents("php://input"), true);
 
@@ -36,6 +37,10 @@ try {
             $respuesta["id_usuario"] = $tupla["id_usuario"];
             $respuesta["datosUsuario"] = $tupla;
             $respuesta["mensaje"] = "Acceso correcto";
+            $respuesta["token"] = crear_jwt([
+                "id_usuario" => $tupla["id_usuario"],
+                "user_name" => $tupla["user_name"]
+            ]);
         } else {
             $respuesta["mensaje"] = "Usuario o contraseña incorrectos.";
         }

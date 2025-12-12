@@ -11,12 +11,14 @@ import {
     Alert,
 } from "reactstrap";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import iconEdit from "../../assets/icons/edit.png";
 import axios from "axios";
 import { PHPUSUARIO } from "../datos";
 import { toast } from "react-toastify";
 
 const VentanaPerfilUsuario = (props) => {
+    const navigate = useNavigate();
     const [verAlerta, setVerAlerta] = useState(false);
     const [msgAlerta, setmsgAlerta] = useState("");
     const [colorAlerta, setcolorAlerta] = useState("info");
@@ -27,6 +29,13 @@ const VentanaPerfilUsuario = (props) => {
     const datosUsuario = props.datosUsuario;
 
     const actualizarUsuario = () => {
+        const authToken = props.token || localStorage.getItem("rx_token");
+        if (!authToken) {
+            setmsgAlerta("Sesión no disponible, inicia sesión de nuevo.");
+            setcolorAlerta("danger");
+            setVerAlerta(true);
+            return;
+        }
         // Validar email
         if (!esEmailValido(nuevoEmail)) {
             setmsgAlerta("El email ingresado no es válido.");
@@ -47,7 +56,13 @@ const VentanaPerfilUsuario = (props) => {
             id_usuario: datosUsuario.id_usuario,
             email: nuevoEmail,
             user_name: nuevoUserName
-        })
+        },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${authToken}`
+                }
+            })
             .then(res => {
                 toast.dismiss();
 
@@ -65,8 +80,13 @@ const VentanaPerfilUsuario = (props) => {
                     setcolorAlerta("danger");
                     setVerAlerta(true);
                 }
-            }).catch(() => {
-                setmsgAlerta("Error conectando con el servidor.");
+            }).catch((err) => {
+                if (err?.response?.status === 401 && props.onAuthError) {
+                    setmsgAlerta("Sesión expirada, inicia sesión nuevamente.");
+                    props.onAuthError();
+                } else {
+                    setmsgAlerta("Error conectando con el servidor.");
+                }
                 setcolorAlerta("danger");
                 setVerAlerta(true);
             });
@@ -112,6 +132,15 @@ const VentanaPerfilUsuario = (props) => {
         });
     };
 
+    const irAFavoritos = () => {
+        props.toggle(); // cerrar modal
+        navigate("/", {
+            state: {
+                verFavoritos: true,
+                id_usuario: datosUsuario?.id_usuario,
+            },
+        });
+    };
 
     return (
         <Modal
@@ -208,6 +237,10 @@ const VentanaPerfilUsuario = (props) => {
 
                 <Button type="button" onClick={props.cerrarSesion} className="btn-cerrar-perfil">
                     Sign out
+                </Button>
+
+                <Button type="button" onClick={irAFavoritos} className="btn-cerrar-perfil">
+                    Ver Favoritos
                 </Button>
             </ModalFooter>
         </Modal>
