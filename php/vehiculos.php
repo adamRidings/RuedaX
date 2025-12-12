@@ -111,11 +111,11 @@ try {
 
     /* ==========================
        INSERTAR IMÁGENES
-       ========================== */ else if ($action === "insertarImagenes") {
+       ========================== */ 
+    else if ($action === "insertarImagenes") {
 
         $id_vehiculo = $_POST["id_vehiculo"] ?? null;
         $fotos       = $_FILES["fotos"] ?? null;
-
         $fotosGuardadas = 0;
 
         if ($id_vehiculo !== null && $fotos !== null) {
@@ -143,7 +143,7 @@ try {
                 $extension = strtolower(pathinfo($fotos["name"][$i], PATHINFO_EXTENSION));
 
                 // limitar extensiones
-                if (!in_array($extension, ["jpg", "jpeg", "png", "gif", "webp"])) {
+                if (!in_array($extension, ["jpg", "jpeg", "png", "gif", "webp", "jfif", "avif"])) {
                     continue;
                 }
 

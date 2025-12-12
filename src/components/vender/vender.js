@@ -31,8 +31,11 @@ const Vender = (props) => {
     const [fotos, setFotos] = useState([]);
 
     const handleImagenChange = (e) => {
-        //Convertir FileList a Array
-        setFotos(Array.from(e.target.files));
+        //Convertir FileList a Array y acumular con las fotos anteriores
+        const newFiles = Array.from(e.target.files);
+        setFotos(prev => [...prev, ...newFiles]);
+        // Limpiar el input para permitir seleccionar más archivos
+        e.target.value = '';
     }
 
     const subirAnuncio = (e) => {
@@ -335,6 +338,33 @@ const Vender = (props) => {
                                 />
                             </div>
                         )}
+
+                        <div className="form-field form-field-full">
+                            {fotos.length > 0 && (
+                                <div className="fotos-seleccionadas">
+                                    <p>Fotos seleccionadas ({fotos.length}):</p>
+                                    <div className="fotos-grid">
+                                        {fotos.map((foto, index) => (
+                                            <div key={index} className="foto-item">
+                                                <img 
+                                                    src={URL.createObjectURL(foto)} 
+                                                    alt={foto.name} 
+                                                    className="foto-preview" 
+                                                />
+                                                <p className="foto-name">{foto.name}</p>
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => setFotos(prev => prev.filter((_, i) => i !== index))}
+                                                    className="btn-eliminar-foto"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </section>
 

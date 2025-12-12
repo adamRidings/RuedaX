@@ -6,13 +6,14 @@ import Header from "./components/header/header.js";
 import Footer from "./components/footer/footer.js";
 import VentanaLogin from "./components/login/VentanaLogin.js";
 import VentanaRegistro from "./components/registro/VentanaRegistro.js";
+import MostrarAnuncios from "./components/mainAnuncios/mainAnuncios.js";
+import Anuncio from "./components/anuncios/anuncios.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Vender from "./components/vender/vender.js";
 import { ToastContainer } from "react-toastify";
 import VentanaPerfilUsuario from "./components/perfil/VentanaPerfilUsuario.js";
 import axios from "axios";
 import { PHPVEHICULOS } from "./components/datos.js";
-
 
 class App extends Component {
   constructor(props) {
@@ -33,12 +34,13 @@ class App extends Component {
   }
 
   obtenerAnuncios() {
-    axios.post(PHPVEHICULOS, { action: "obtenerAnuncios" })
-      .then(response => {
+    axios
+      .post(PHPVEHICULOS, { action: "obtenerAnuncios" })
+      .then((response) => {
         console.log("Anuncios obtenidos:", response.data.anuncios);
         this.setState({ anuncios: response.data.anuncios });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error al obtener anuncios:", error);
       });
   }
@@ -48,20 +50,23 @@ class App extends Component {
   }
 
   toggleRegistro() {
-    this.setState({ mostrarRegistro: !this.state.mostrarRegistro, mostrarLogin: false });
+    this.setState({
+      mostrarRegistro: !this.state.mostrarRegistro,
+      mostrarLogin: false,
+    });
   }
 
   togglePerfil() {
     this.setState({ mostrarPerfil: !this.state.mostrarPerfil });
   }
 
-  cerrarSesion() {  
+  cerrarSesion() {
     this.setState({
       logueado: false,
       mostrarPerfil: false,
       usuarioLogueado: "",
       id_usuarioLogueado: "",
-      datosUsuarioLogueado: null
+      datosUsuarioLogueado: null,
     });
   }
 
@@ -72,13 +77,13 @@ class App extends Component {
       mostrarRegistro: false,
       usuarioLogueado: usuario,
       id_usuarioLogueado: id_usuario,
-      datosUsuarioLogueado: datosUsuario
+      datosUsuarioLogueado: datosUsuario,
     });
   }
 
   actualizarDatosUsuarioLogueado(nuevosDatos) {
     this.setState({
-      datosUsuarioLogueado: nuevosDatos
+      datosUsuarioLogueado: nuevosDatos,
     });
   }
 
@@ -88,45 +93,59 @@ class App extends Component {
         <ToastContainer position="top-right" autoClose={3000} />
 
         {this.state.logueado && (
-        <VentanaPerfilUsuario
-                  mostrar={this.state.mostrarPerfil}
-                  toggle={() => this.togglePerfil()}
-                  datosUsuario={this.state.datosUsuarioLogueado}
-                  cerrarSesion={() => this.cerrarSesion()}
-                  actualizarDatosUsuario={(nuevosDatos) => this.actualizarDatosUsuarioLogueado(nuevosDatos)}
-        />)}
+          <VentanaPerfilUsuario
+            mostrar={this.state.mostrarPerfil}
+            toggle={() => this.togglePerfil()}
+            datosUsuario={this.state.datosUsuarioLogueado}
+            cerrarSesion={() => this.cerrarSesion()}
+            actualizarDatosUsuario={(nuevosDatos) =>
+              this.actualizarDatosUsuarioLogueado(nuevosDatos)
+            }
+          />
+        )}
 
         <Router>
           <Routes>
             {/* Pagina de inicio */}
-            <Route path="/" element={
-              <>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Header
+                    toggleLogin={() => this.toggleLogin()}
+                    togglePerfil={() => this.togglePerfil()}
+                    logueado={this.state.logueado}
+                  />
 
-                <Header
-                  toggleLogin={() => this.toggleLogin()}
-                  togglePerfil={() => this.togglePerfil()}
-                  logueado={this.state.logueado}
-                />
+                  <MostrarAnuncios
+                    anuncios={this.state.anuncios}
+                    logueado={this.state.logueado}
+                  />
 
-                <VentanaLogin
-                  mostrar={this.state.mostrarLogin}
-                  toggle={() => this.toggleLogin()}
-                  login={(usuario, id_usuario, datosUsuario) => this.loguearUsuario(usuario, id_usuario, datosUsuario)}
-                  toggleRegistro={() => this.toggleRegistro()}
-                />
+                  <VentanaLogin
+                    mostrar={this.state.mostrarLogin}
+                    toggle={() => this.toggleLogin()}
+                    login={(usuario, id_usuario, datosUsuario) =>
+                      this.loguearUsuario(usuario, id_usuario, datosUsuario)
+                    }
+                    toggleRegistro={() => this.toggleRegistro()}
+                  />
 
-                <VentanaRegistro
-                  mostrar={this.state.mostrarRegistro}
-                  toggle={() => this.toggleRegistro()}
-                  registro={(usuario, id_usuario, datosUsuario) => this.loguearUsuario(usuario, id_usuario, datosUsuario)}
-                />
-              </>
-            }
+                  <VentanaRegistro
+                    mostrar={this.state.mostrarRegistro}
+                    toggle={() => this.toggleRegistro()}
+                    registro={(usuario, id_usuario, datosUsuario) =>
+                      this.loguearUsuario(usuario, id_usuario, datosUsuario)
+                    }
+                  />
+                </>
+              }
             />
 
             {/* Página venta */}
             <Route
-              path="/vender" element={
+              path="/vender"
+              element={
                 <>
                   <Header
                     toggleLogin={() => this.toggleLogin()}
@@ -136,17 +155,62 @@ class App extends Component {
                   <VentanaLogin
                     mostrar={this.state.mostrarLogin}
                     toggle={() => this.toggleLogin()}
-                    login={(usuario, id_usuario, datosUsuario) => this.loguearUsuario(usuario, id_usuario, datosUsuario)}
+                    login={(usuario, id_usuario, datosUsuario) =>
+                      this.loguearUsuario(usuario, id_usuario, datosUsuario)
+                    }
                     toggleRegistro={() => this.toggleRegistro()}
                   />
 
                   <VentanaRegistro
                     mostrar={this.state.mostrarRegistro}
                     toggle={() => this.toggleRegistro()}
-                    registro={(usuario, id_usuario, datosUsuario) => this.loguearUsuario(usuario, id_usuario, datosUsuario)}
+                    registro={(usuario, id_usuario, datosUsuario) =>
+                      this.loguearUsuario(usuario, id_usuario, datosUsuario)
+                    }
                   />
 
-                  <Vender logueado={this.state.logueado} usuarioLogueado={this.state.usuarioLogueado} id_usuarioLogueado={this.state.id_usuarioLogueado} />
+                  <Vender
+                    logueado={this.state.logueado}
+                    usuarioLogueado={this.state.usuarioLogueado}
+                    id_usuarioLogueado={this.state.id_usuarioLogueado}
+                  />
+                </>
+              }
+            />
+
+            {/* Página anuncio */}
+            <Route
+              path="/anuncio/:id"
+              element={
+                <>
+                  <Header
+                    toggleLogin={() => this.toggleLogin()}
+                    logueado={this.state.logueado}
+                  />
+
+                  <VentanaLogin
+                    mostrar={this.state.mostrarLogin}
+                    toggle={() => this.toggleLogin()}
+                    login={(usuario, id_usuario, datosUsuario) =>
+                      this.loguearUsuario(usuario, id_usuario, datosUsuario)
+                    }
+                    toggleRegistro={() => this.toggleRegistro()}
+                  />
+
+                  <VentanaRegistro
+                    mostrar={this.state.mostrarRegistro}
+                    toggle={() => this.toggleRegistro()}
+                    registro={(usuario, id_usuario, datosUsuario) =>
+                      this.loguearUsuario(usuario, id_usuario, datosUsuario)
+                    }
+                  />
+
+                  <Anuncio
+                    logueado={this.state.logueado}
+                    usuarioLogueado={this.state.usuarioLogueado}
+                    id_usuarioLogueado={this.state.id_usuarioLogueado}
+                    anuncios={this.state.anuncios}
+                  />
                 </>
               }
             />

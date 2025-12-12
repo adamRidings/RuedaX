@@ -127,6 +127,73 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.55);
 }
 
+/* Input fotos */
+input[type="file"]::-webkit-file-upload-button {
+   color: #ffffff;
+   background-color: #C3401C;
+   border: none;
+   border-radius: 15px;
+}
+
+/* Fotos seleccionadas */
+.fotos-seleccionadas {
+    margin-top: 0.5rem;
+}
+
+.fotos-seleccionadas p {
+    font-size: 0.85rem;
+    color: #cccccc;
+    margin-bottom: 0.5rem;
+}
+
+.fotos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.75rem;
+}
+
+.foto-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1A2E40;
+    border-radius: 8px;
+    padding: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.foto-preview {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.foto-name {
+    font-size: 0.75rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    word-break: break-word;
+}
+
+.btn-eliminar-foto {
+    background: #C3401C;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+}
+
+.btn-eliminar-foto:hover {
+    background: #692310;
+}
+
 /* Responsive ajustes */
 @media (max-width: 768px) {
     .vender-main {

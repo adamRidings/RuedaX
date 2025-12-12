@@ -1,0 +1,116 @@
+/* Contenedor de anuncios */
+.anuncios-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  padding: 130px 3rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Filtros activos */
+.filtros-activos {
+  grid-column: 1 / -1;
+  background-color: #1a2e40;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e9ecef;
+}
+
+.filtros-activos div {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filtros-activos p {
+  margin: 0;
+  color: white;
+}
+
+.filtros-activos button {
+  background-color: #c6532b;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.filtros-activos button:hover {
+  background-color: #a84422;
+}
+
+/* Tarjeta de anuncio */
+.anuncio-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #c6532b;
+  cursor: pointer;
+}
+
+.anuncio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen de la tarjeta */
+.anuncio-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Cuerpo de la tarjeta */
+.anuncio-card .card-body {
+  padding: 1.5rem;
+}
+
+/* Título */
+.anuncio-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 0.75rem;
+}
+
+/* Texto de la tarjeta */
+.anuncio-card .card-text {
+  font-size: 0.9rem;
+  color: #666666;
+  line-height: 1.4;
+}
+
+.anuncio-card .card-text strong {
+  color: #333333;
+}
+
+/* Botón (si se agrega) */
+.anuncio-card .btn {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .anuncios-container {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 130px 2rem 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .anuncios-container {
+    grid-template-columns: 1fr;
+    padding: 130px 1.5rem 1.5rem;
+    gap: 1.5rem;
+  }
+}
